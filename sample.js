@@ -22,7 +22,7 @@ s
 .info('ok')
 .warn('kuma')
 .error('dame')
-.fatal('kita');
+.fatal('kita', 'kita');
 
 // renewal
 var sl = require('smart-log').SmartLog();
