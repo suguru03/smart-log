@@ -1,0 +1,9 @@
+{
+  "name": "smart-log",
+  "version": "0.0.1",
+  "description": "smart-log is able to output log",
+  "main": "index.js",
+  "scripts": {
+  },
+  "license": "MIT"
+}
