@@ -30,20 +30,27 @@ s
 })
 ('kiri')
 .log('kt')
-.debug('kta')
 .info('ok')
 .warn('kuma')
-.error('dame')
-.fatal('kita', 'kita');
-/*
+.error('dame', 'dame');
 **** chain ****
 ( ｰ`дｰ´)ｷﾘｯ
 ｷﾀ━━━━(ﾟ∀ﾟ)━━━━!!!!
-ｷﾀ━━━━o(*´∀`)○━━━━━!!
 ( ´∀｀)bｸﾞｯ!
 (*￣(ｴ)￣*)
-ﾀﾞｧﾒ 乂(ﾟДﾟ三ﾟДﾟ)乂 ﾀﾞｧﾒ
-ｷﾀ━━━━(°Д°)━━━━!!!! kita
+ﾀﾞｧﾒ 乂(ﾟДﾟ三ﾟДﾟ)乂 ﾀﾞｧﾒ dame
+*/
+
+// extend - node only
+s()('**** extend ****')
+.ex()
+.info('kt', { a: { b: { c: { d: { e: 1 } } } } })
+.ex(false)
+( { a: { b: { c: { d: { e: 2 } } } } });
+/*
+**** extend ****
+ｷﾀ━━━━(ﾟ∀ﾟ)━━━━!!!! { a: { b: { c: { d: { e: 1 } } } } }
+{ a: { b: { c: [Object] } } }
 */
 
 // renewal
@@ -51,6 +58,7 @@ var sl = require('smart-log').SmartLog();
 sl()('**** renewal ****');
 sl('kuma');
 /*
+**** renewal ****
 （´(ｪ)｀）
 */
 ```

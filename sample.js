@@ -18,11 +18,16 @@ s
 })
 ('kiri')
 .log('kt')
-.debug('kta')
 .info('ok')
 .warn('kuma')
-.error('dame')
-.fatal('kita', 'kita');
+.error('dame', 'dame');
+
+// extend - node only
+s()('**** extend ****')
+.ex()
+.info('kt', { a: { b: { c: { d: { e: 1 } } } } })
+.ex(false)
+( { a: { b: { c: { d: { e: 2 } } } } });
 
 // renewal
 var sl = require('smart-log').SmartLog();

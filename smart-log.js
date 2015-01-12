@@ -4,11 +4,9 @@ module.exports = SmartLog;
 
 var method = [
   'log',
-  'debug',
   'info',
   'warn',
-  'error',
-  'fatal'
+  'error'
 ];
 
 var smartObject = {
@@ -26,6 +24,7 @@ var smartObject = {
 function SmartLog() {
 
   var _smartObject = {};
+  var extend = false;
   _objectEach(smartObject, function(value, key) {
     _smartObject[key] = value;
   });
@@ -57,16 +56,30 @@ function SmartLog() {
         var i = 0;
         var args = Array(l);
         while(i++ < l) {
-          args[i - 1] = arguments[i];
+          if (extend) {
+            args[i - 1] = require('util').inspect(arguments[i], false, null);
+          } else {
+            args[i - 1] = arguments[i];
+          }
         }
         args.unshift(smartValue);
-        console.log.apply(console, args);
+        console[level].apply(console, args);
       } else {
-        console.log(smartValue === undefined ? '' : smartValue);
+        var arg = smartValue === undefined ? '' : smartValue;
+        if (extend) {
+          arg = require('util').inspect(arg, false, null);
+        }
+        console[level](arg);
       }
       return this;
     };
   });
+
+  // node only
+  smartLog.ex = function(bool) {
+    extend = typeof module == 'object' ? bool !== false : false;
+    return this;
+  };
 
   return smartLog;
 }
