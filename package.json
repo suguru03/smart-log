@@ -1,6 +1,6 @@
 {
   "name": "smart-log",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "smart-log is very smart!",
   "main": "index.js",
   "scripts": {
