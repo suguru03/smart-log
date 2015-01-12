@@ -33,6 +33,7 @@ s
 .info('ok')
 .warn('kuma')
 .error('dame', 'dame');
+/*
 **** chain ****
 ( ｰ`дｰ´)ｷﾘｯ
 ｷﾀ━━━━(ﾟ∀ﾟ)━━━━!!!!
