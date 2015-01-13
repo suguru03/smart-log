@@ -36,6 +36,17 @@ s()('**** activate ****')
 .activate()
 .log('ok');
 
+// smart line
+s()('**** smart line ****')
+.log('4-')
+.info('8+')
+.warn('12=')
+.error('10hoge')
+.configure({
+  'l': '48='
+})
+.log('l');
+
 // renewal
 var sl = require('smart-log').SmartLog();
 sl()('**** renewal ****');

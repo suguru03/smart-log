@@ -66,6 +66,25 @@ ok
 ( ´∀｀)bｸﾞｯ!
 */
 
+// smart line
+s()('**** smart line ****')
+.log('4-')
+.info('8+')
+.warn('12=')
+.error('10hoge');
+.configure({
+  'l': '48='
+})
+.log('l');
+/*
+**** smart line ****
+----
+++++++++
+============
+hogehogehogehogehogehogehogehogehogehoge
+================================================
+*/
+
 // renewal
 var sl = require('smart-log').SmartLog();
 sl()('**** renewal ****');

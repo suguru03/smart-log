@@ -31,6 +31,7 @@ function SmartLog() {
   });
 
   var smartLog = function() {
+
     smartLog.log.apply(smartLog, arguments);
     return smartLog;
   };
@@ -68,10 +69,31 @@ function SmartLog() {
 
   _arrayEach(method, function(level) {
     smartLog[level] = function(smartKey) {
-      var smartValue = smart ? _smartObject[smartKey] : smartKey;
-      if (smartValue === undefined) {
-        smartValue = smartKey;
+      var smartValue = smartKey;
+      if (smart) {
+        smartValue = _smartObject[smartKey] !== undefined ? _smartObject[smartKey] : smartKey;
       }
+      if (smart && typeof smartValue === 'string') {
+        var keys = smartValue.split('');
+        var index = keys.reverse().reduce(function(memo, value, index) {
+          if (memo === -1 && /[0-9]/.test(+value)) {
+            memo = keys.length - index;
+          }
+          return memo;
+        }, -1);
+        if (index >= 0) {
+          var num = smartValue.substr(0, index);
+          var str = smartValue.substr(index);
+          if (!isNaN(num) && num > 0) {
+            var s = _smartObject[str] || str;
+            smartValue = s;
+            while(--num) {
+              smartValue += s;
+            }
+          }
+        }
+      }
+
       var l = arguments.length - 1;
       if (l > 0) {
         var i = 0;
