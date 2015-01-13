@@ -25,6 +25,7 @@ function SmartLog() {
 
   var _smartObject = {};
   var extend = false;
+  var smart = true;
   _objectEach(smartObject, function(value, key) {
     _smartObject[key] = value;
   });
@@ -45,9 +46,29 @@ function SmartLog() {
     return this;
   };
 
+  // activate feature of replace text
+  smartLog.activate = function() {
+
+    smart = true;
+    return this;
+  };
+
+  // inactivate feature of replace text
+  smartLog.inactivate = function() {
+
+    smart = false;
+    return this;
+  };
+
+  // node only
+  smartLog.ex = function(bool) {
+    extend = typeof module == 'object' ? bool !== false : false;
+    return this;
+  };
+
   _arrayEach(method, function(level) {
     smartLog[level] = function(smartKey) {
-      var smartValue = _smartObject[smartKey];
+      var smartValue = smart ? _smartObject[smartKey] : smartKey;
       if (smartValue === undefined) {
         smartValue = smartKey;
       }
@@ -74,12 +95,6 @@ function SmartLog() {
       return this;
     };
   });
-
-  // node only
-  smartLog.ex = function(bool) {
-    extend = typeof module == 'object' ? bool !== false : false;
-    return this;
-  };
 
   return smartLog;
 }

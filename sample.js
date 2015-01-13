@@ -29,7 +29,15 @@ s()('**** extend ****')
 .ex(false)
 ( { a: { b: { c: { d: { e: 2 } } } } });
 
+// activate and inactivate
+s()('**** activate ****')
+.inactivate()
+.log('ok')
+.activate()
+.log('ok');
+
 // renewal
 var sl = require('smart-log').SmartLog();
 sl()('**** renewal ****');
 sl('kuma');
+

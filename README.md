@@ -54,6 +54,18 @@ s()('**** extend ****')
 { a: { b: { c: [Object] } } }
 */
 
+// activate and inactivate
+s()('**** activate ****')
+.inactivate()
+.log('ok')
+.activate()
+.log('ok');
+/*
+**** activate ****
+ok
+( ´∀｀)bｸﾞｯ!
+*/
+
 // renewal
 var sl = require('smart-log').SmartLog();
 sl()('**** renewal ****');
