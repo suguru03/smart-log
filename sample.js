@@ -45,7 +45,20 @@ s()('**** smart line ****')
 .configure({
   'l': '48='
 })
-.log('l');
+.log('l')
+.log('10');
+
+// timer
+s()('**** timer ****')
+.time('test')
+.timeEnd('test')
+.timeClear('test')
+.t(['test', 'kt'])
+.te('test', 'kt')
+.te('kt')
+.tc('test')
+.t('test')
+.te('test');
 
 // renewal
 var sl = require('smart-log').SmartLog();
