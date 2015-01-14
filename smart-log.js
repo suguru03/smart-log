@@ -23,6 +23,30 @@
     'dame': 'ﾀﾞｧﾒ 乂(ﾟДﾟ三ﾟДﾟ)乂 ﾀﾞｧﾒ'
   };
 
+  var colors = {
+    '\u001b[30m': ['black'], // I like black screen, so 'b' is 'blue'.
+    '\u001b[31m': ['r', 'red'],
+    '\u001b[32m': ['g', 'green'],
+    '\u001b[33m': ['y', 'yellow'],
+    '\u001b[34m': ['b', 'blue'],
+    '\u001b[35m': ['m', 'magenta'],
+    '\u001b[36m': ['c', 'cyan'],
+    '\u001b[37m': ['w', 'white'],
+
+    '\u001b[0m': ['clear', 'reset']
+  };
+
+  var colorObject = {};
+  _objectEach(colors, function set(key, code) {
+    if (Array.isArray(key)) {
+      _arrayEach(key, function(key) {
+        set(key, code);
+      });
+    } else {
+      colorObject[key] = code;
+    }
+  });
+
   var objectTypes = {
     'function': true,
     'object': true
@@ -32,7 +56,8 @@
 
     var _smartObject = {};
     var extend = false;
-    var smart = true;
+    var active = true;
+    var color = '';
     var timer = {};
     _objectEach(smartObject, function(value, key) {
       _smartObject[key] = value;
@@ -49,8 +74,9 @@
      */
     smartLog.configure = function(options) {
 
+      options = options || {};
       _objectEach(options, function(value, key) {
-        _smartObject[key] = options[key];
+        _smartObject[key] = value;
       });
       return this;
     };
@@ -58,20 +84,28 @@
     // activate feature of replace text
     smartLog.activate = function() {
 
-      smart = true;
+      active = true;
       return this;
     };
 
     // inactivate feature of replace text
     smartLog.inactivate = function() {
 
-      smart = false;
+      active = false;
       return this;
     };
 
     // node only
     smartLog.ex = function(bool) {
-      extend = objectTypes[module] ? bool !== false : false;
+
+      extend = objectTypes[typeof module] ? bool !== false : false;
+      return this;
+    };
+
+    // color config
+    smartLog.color = smartLog.c = function(key) {
+
+      color = colorObject[key] || '';
       return this;
     };
 
@@ -79,6 +113,7 @@
      * @param {String|String[]} name
      */
     smartLog.time = smartLog.t = function time(name) {
+
       if (Array.isArray(name)) {
         _arrayEach(name, function(name) {
           time(name);
@@ -91,7 +126,7 @@
         });
         return this;
       }
-      name = _smartObject[name] || name;
+      name = getSmartValue(name);
       timer[name] = getTimer().init().start();
       return this;
     };
@@ -100,6 +135,7 @@
      * @param {String|String[]} name
      */
     smartLog.timeEnd = smartLog.te = function timeEnd(name) {
+
       if (Array.isArray(name)) {
         _arrayEach(name, function(name) {
           timeEnd(name);
@@ -112,9 +148,9 @@
         });
         return this;
       }
-      name = _smartObject[name] || name;
+      name = getSmartValue(name);
       if (timer[name]) {
-        console.log(name, timer[name].diff(), '[μs]');
+        console.log(resolveColor(name), timer[name].diff(), '[μs]');
       }
       return this;
     };
@@ -123,6 +159,7 @@
      * @param {String|String[]} name
      */
     smartLog.timeClear = smartLog.tc = function timeClear(name) {
+
       if (Array.isArray(name)) {
         _arrayEach(name, function(name) {
           timeClear(name);
@@ -135,7 +172,7 @@
         });
         return this;
       }
-      name = _smartObject[name] || name;
+      name = getSmartValue(name);
       if (timer[name]) {
         delete timer[name];
       }
@@ -144,12 +181,10 @@
 
 
     _arrayEach(method, function(level) {
+
       smartLog[level] = function(smartKey) {
-        var smartValue = smartKey;
-        if (smart) {
-          smartValue = _smartObject[smartKey] !== undefined ? _smartObject[smartKey] : smartKey;
-        }
-        if (smart && typeof smartValue === 'string') {
+        var smartValue = getSmartValue(smartKey);
+        if (active && typeof smartValue === 'string') {
           var keys = smartValue.split('');
           var size = keys.length;
           var index = keys.reverse().reduce(function(memo, value, index) {
@@ -163,7 +198,7 @@
             var num = smartValue.substr(0, index);
             var str = smartValue.substr(index);
             if (!isNaN(num) && num > 0) {
-              var s = _smartObject[str] || str;
+              var s = getSmartValue(str);
               smartValue = s;
               while(--num) {
                 smartValue += s;
@@ -183,7 +218,7 @@
               args[i - 1] = arguments[i];
             }
           }
-          args.unshift(smartValue);
+          args.unshift(resolveColor(smartValue));
           if (console[level]) {
             console[level].apply(console, args);
           } else {
@@ -194,6 +229,7 @@
           if (extend) {
             arg = require('util').inspect(arg, false, null);
           }
+          arg = resolveColor(arg);
           if (console[level]) {
             console[level](arg);
           } else {
@@ -205,7 +241,25 @@
     });
 
     return smartLog;
+
+    function resolveColor(value) {
+      if (typeof value == 'object') {
+        var key = Object.keys(value).shift();
+        value[key] = resolveColor(value[key]);
+      } else {
+        return color + value;
+      }
+    }
+
+    function getSmartValue(key) {
+
+      if (active) {
+        return _smartObject[key] !== undefined ? _smartObject[key] : key;
+      }
+      return key;
+    }
   }
+
 
   function _arrayEach(array, iterator) {
 

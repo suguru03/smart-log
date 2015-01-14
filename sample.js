@@ -18,9 +18,13 @@ s
 })
 ('kiri')
 .log('kt')
+.color('c')
 .info('ok')
+.c('m')
 .warn('kuma')
-.error('dame', 'dame');
+.c('r')
+.error('dame', 'dame')
+.c('clear');
 
 // extend - node only
 s()('**** extend ****')
@@ -45,7 +49,9 @@ s()('**** smart line ****')
 .configure({
   'l': '48='
 })
+.c('y')
 .log('l')
+.c('clear')
 .log('10');
 
 // timer
@@ -57,6 +63,7 @@ s()('**** timer ****')
 .te('test', 'kt')
 .te('kt')
 .tc('test')
+.c('c')
 .t('test')
 .te('test');
 
